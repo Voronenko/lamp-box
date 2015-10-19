@@ -11,7 +11,6 @@
 
     php_extensions:
       - { name: "php5-curl" }
-      - { name: "php5-imagick" }
       - { name: "php5-memcache" }
       - { name: "php5-memcached" }
 
@@ -34,7 +33,7 @@
      - include: "./tasks_phpextensions.yml"                                         # Installs custom php extensions
      - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
      - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           # register apache websites on vagrant
-     - include: "./tasks_christiancinema_provision.yml"
+
 
   handlers:
     - name: restart apache2
