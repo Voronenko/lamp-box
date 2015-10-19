@@ -1,0 +1,3 @@
+[submodule "public/ansible_developer_recipes"]
+	path = public/ansible_developer_recipes
+	url = git@github.com:Voronenko/ansible-developer_recipes.git
