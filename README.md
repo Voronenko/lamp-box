@@ -72,11 +72,16 @@ vars:
      # node 0.12.*
      - include: "{{root_dir}}/tasks_nodejs.yml"
      # installs memcached service     
-     - include: "{{root_dir}}/tasks_memcached.yml"                                  # Installs custom php extensions
-     - include: "./tasks_phpextensions.yml"                                         # (re)imports databases from db folder
-     - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # register apache websites on vagrant
-     - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           </pre>
-This installs typical LAMP stack: Apache 2.4 with PHP 5.5 (or 5.4 or 5.6 , depending on php_family set). In addition, composer and bower tools are installed.  Gulp, grunt are also available.
+     - include: "{{root_dir}}/tasks_memcached.yml"
+     # Installs custom php extensions
+     - include: "./tasks_phpextensions.yml"
+     # (re)imports databases from db folder
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"
+     # register apache websites on vagrant
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           
+  </pre>
+
+This installs typical LAMP stack: Apache 2.4 with PHP 5.5 (or 5.4 or 5.6 , depending on php_family set). In addition, composer and bower tools are installed.  Gulp, grunt are also available. If I need more specific setup on versions, I tune it here.
 
 
 ### Getting guest projects into vagrant
@@ -99,6 +104,30 @@ init.sh provided withing repository installs or reinstalls guest projects.
 ### Overriding guest projects configuration for vagrant.
 This could be really tricky. Mine recommendation, is to keep under local/ subfolder files that needs to be overwritten for working with vagrant. For example, if guest project has config in public/proj1/config/  , we can have overrides in local/proj1/config/local_config_file_adjusted_for_vagrant.php ; In this case adjusting codebase to work under vagrant is as easy as copying contents of the local folder over the public. If guest project architecture allows environment or development based configuration that's the best scenario.
 
+### Making guest projects accessible from local box.
+Take a look on the following section from vagrant.yml:
+<pre>
+vagrant_lvh_sites:
+  - { type: "web",                                                                 # WSGI & LAMP sites supported
+      name: "tools",                                                               # Name of the dev website
+      path: "/vagrant/public/vagrant-tools",                                       # Path to site home folder
+#          template: "{{playbook_dir}}/files/apache2/website.yml",                     # Provide custom template, if builtin is not good
+      aliases: [ "tools.vagrant.dev" ]                                             # These will be additional aliases to <<name>>.lvh.me
+      vhost_overrides: ["SetEnv no-gzip 1", "RequestHeader unset Accept-Encoding"] # These lines will be added to website configuration file.
+    }
+</pre>
+
+Configuration variable _vagrant_lvh_sites_  contains list of sites,that needs to be configured withing Vagrant.
+Let me guide through parameters:
+- type:  can be either web or wsgi - specifies what vhost template is used. 'web' is suitable for most of the lamp projects.
+- name: unique alpha-numeric site's name. Site will be available under name <site name>.lvh.me
+- path: path to the site repository root folder
+- dest: optional, if repository root folder is not the website root. Specify relative path to web root here.
+- template: optional, if default apache virtual host template does not suit your needs, you can override it here.
+- aliases: optiona, array of domain names. Will be used as virtual host aliases. Suitable, if you plan to access vagrant on .dev domain
+- vhost_overrides: optional, array of strings, list of Apache configurations that will be injected into the Apache vhost template.
+
+<site name>.lvh.me trick:  \*.lvh.me always resolves to 127.0.0.1 ; This allows developer to use the same domain name both inside vagrant and developer's local box. Bonus - port forwarding works like a charm. You can achieve effect: by navigating to website.lvh.me you access website hosted and configured on vagrant.
 
 ## Importing mysql database dumps
 
