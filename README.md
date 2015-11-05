@@ -109,6 +109,8 @@ init.sh provided withing repository installs or reinstalls guest projects.
 ### Overriding guest projects configuration for vagrant.
 This could be really tricky. Mine recommendation, is to keep under local/ subfolder files that needs to be overwritten for working with vagrant. For example, if guest project has config in public/proj1/config/  , we can have overrides in local/proj1/config/local_config_file_adjusted_for_vagrant.php ; In this case adjusting codebase to work under vagrant is as easy as copying contents of the local folder over the public. If guest project architecture allows environment or development based configuration that's the best scenario.
 
+For example, usually I have vagrant-tools project, which contains small php helpers to examine vagrant box state (like Adminer, memcache.php tools.)
+
 ### Making guest projects accessible from local box.
 Take a look on the following section from vagrant.yml:
 <pre>
