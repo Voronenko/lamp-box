@@ -168,10 +168,36 @@ touch "$HOMEDIR/.nodbs"
 </pre>
 
 
+## Troubleshouting emails
+Usually sites send mails. In order to debug this part, I usually use mailhog. This is SMTP debugging tool with WebUI interface, suitable also for automatic testing. Project website: https://github.com/mailhog/MailHog
+
+# Debugging
+
+
 ## Code in action
 
 Code can be downloaded from repository [https://github.com/Voronenko/lamp-box](https://github.com/Voronenko/lamp-box "https://github.com/Voronenko/lamp-box")
 
+### Prepare
+Checkout or fork repository. Run ./init_vagrant.sh to install vagrant plugins if you do not have them already.
 
+Adjust .projmodules to include project repositories you are going to wrap. If necessary, implement recipe to configure some specific project environment.
+
+Run ./init.sh to clone necessary project repositories. Do not remove "public/ansible_developer_recipes" project, because it is required for environment setup.
+
+Review deployment/vagrant.yml to ensure it includes everything you planned to install.
+
+### Provision environment.
+
+Run _vagrant up_ and be patient. You are configuring new box, so it may take a while. Speed depends on your internet connectivity. In rare case provision  might be interrupted. In this case repeat provisioning manually using _vagrant provision_ command.
+
+Finally you should see smth like this:
+<pre>
+PLAY RECAP ********************************************************************
+default                    : ok=46   changed=16   unreachable=0    failed=0  
+</pre>
+
+At this moment you have:
+- Mailhog web ui interface at http://localhost:9025/
 
 ## Points of interest

@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |c|
   c.vm.network(:forwarded_port, {:guest=>80, :host=>8080}) #http
   c.vm.network(:forwarded_port, {:guest=>8443, :host=>8443}) #ssl
   c.vm.network(:forwarded_port, {:guest=>3306, :host=>9306}) #mysql
-  c.vm.network(:forwarded_port, {:guest=>1080, :host=>9080}) #mail UI
+  c.vm.network(:forwarded_port, {:guest=>8025, :host=>9025}) #mail UI
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.

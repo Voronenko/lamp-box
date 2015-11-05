@@ -5,8 +5,14 @@
     mysql_root_user: root
     mysql_root_password: devroot
     apache_mode: prefork # use prefork or worker variables
-    php_family: "5.4"
+
+    java_version: 8
+    mailhog_version: 0.1.6
+    mongo_version: 3
     nodejs_version: "0.12" # 0.10 0.12
+
+    php_family: default # 5.4 | 5.5 | 5.6 | default
+    hypervisor: esx
 
 
     php_extensions:
@@ -19,7 +25,7 @@
           name: "tools",                                                               # Name of the dev website
           path: "/vagrant/public/vagrant-tools",                                       # Path to site home folder
 #          template: "{{playbook_dir}}/files/apache2/website.yml",                     # Provide custom template, uf builtin is not good
-          aliases: [ "tools.vagrant.dev" ]                                             # These will be additional aliases to <<name>>.lvh.me
+          aliases: [ "tools.vagrant.dev" ],                                             # These will be additional aliases to <<name>>.lvh.me
           vhost_overrides: ["SetEnv no-gzip 1", "RequestHeader unset Accept-Encoding"] # These lines will be added to website configuration file.
         }
 
@@ -30,7 +36,9 @@
      - include: "{{root_dir}}/tasks_php_apache.yml"                                 # php 5.5 for apache
      - include: "{{root_dir}}/tasks_nodejs.yml"                                     # node 0.12.*
      - include: "{{root_dir}}/tasks_memcached.yml"                                  # installs memcached service
+     - include: "{{root_dir}}/tools/tasks_mailhog.yml"
      - include: "./tasks_phpextensions.yml"                                         # Installs custom php extensions
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                             # db import script, python venv init scripts
      - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
      - include: "{{root_dir}}/vagrant/tasks_vagrant_apache2_devsites.yml"           # register apache websites on vagrant
 
