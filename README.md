@@ -171,7 +171,28 @@ touch "$HOMEDIR/.nodbs"
 ## Troubleshouting emails
 Usually sites send mails. In order to debug this part, I usually use mailhog. This is SMTP debugging tool with WebUI interface, suitable also for automatic testing. Project website: https://github.com/mailhog/MailHog
 
-# Debugging
+## Debugging
+
+For some reason this most often causes difficulties. XDebug is installed inside a lamp box. It is configured to poll back originating host, so in most cases you will need just to listen for incoming debug connections (green phone in phpstorm).
+In addition, you will need either some bookmarklet or extension like [XDebug Helper](https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc) to turn debugging session on.
+
+Sites inside vagrant are available:
+
+- on lvh.me domain on port 9080 (if you are on windows, or privileged user - you can map even 80 to 80)
+![lvh.me](https://raw.githubusercontent.com/Voronenko/lamp-box/master/docs/tools_lvh.jpg)
+- on vagrant.dev domain on port 80
+![vagrant.dev](https://raw.githubusercontent.com/Voronenko/lamp-box/master/docs/tools_dev.jpg)
+
+Typical steps to debug using phpstorm include:
+
+- configuring interpreter (you can use either local or remote one). PHPStorm 9.0.2 will automatically detect vagrant, btw.
+![remote intepreter](https://raw.githubusercontent.com/Voronenko/lamp-box/master/docs/phpstorm_remoteinterpreter.jpg)
+
+- turning on listen for debug connections (phpstorm) + ensuring setting debug session in browser
+![remote intepreter](https://github.com/Voronenko/lamp-box/blob/master/docs/phpstorm_debug_on.jpg)
+
+- putting breakpoint inside your code and actually debug. Note: root of the lamp-box repository is mapped to /vagrant/
+![remote intepreter](https://raw.githubusercontent.com/Voronenko/lamp-box/master/docs/debug_process_example.jpg)
 
 
 ## Code in action
