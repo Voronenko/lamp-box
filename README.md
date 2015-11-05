@@ -50,12 +50,17 @@ vars:
   mysql_root_user: root
   mysql_root_password: devroot
   apache_mode: prefork # use prefork or worker variables
-  php_family: "5.4"
+  java_version: 8
+  mailhog_version: 0.1.6
+  mongo_version: 3
   nodejs_version: "0.12" # 0.10 0.12
+  php_family: default # 5.4 | 5.5 | 5.6 | default
+  php_xdebug_version: 2.3.3
   ...
 
   php_extensions:
     - { name: "php5-curl" }
+    - { name: "php5-xsl" }    
     - { name: "php5-memcache" }
     - { name: "php5-memcached" }
 
@@ -202,7 +207,7 @@ Code can be downloaded from repository [https://github.com/Voronenko/lamp-box](h
 ### Prepare
 Checkout or fork repository. Run ./init_vagrant.sh to install vagrant plugins if you do not have them already.
 
-Adjust .projmodules to include project repositories you are going to wrap. If necessary, implement recipe to configure some specific project environment.
+Adjust .projmodules to include project repositories you are going to wrap. If necessary, implement ansible recipe to configure some specific project environment which go beyond installing php extensions.
 
 Run ./init.sh to clone necessary project repositories. Do not remove "public/ansible_developer_recipes" project, because it is required for environment setup.
 
@@ -218,7 +223,12 @@ PLAY RECAP ********************************************************************
 default                    : ok=46   changed=16   unreachable=0    failed=0  
 </pre>
 
-At this moment you have:
-- Mailhog web ui interface at http://localhost:9025/
+At this moment you have additional helpers:
+- Mailhog web ui interface at http://localhost:9025/ or at http://tools.vagrant.dev:8025/
+- PHPMyAdmin web ui: under each site in /phpmyadmin/ subfolder. Use root / devroot to login. (As you recall, your project dbs are imported automatically once at initial provision)
+- WebGrind profiler: under each site in /webgrind/ subfolder.
+- Configured debugger.
 
 ## Points of interest
+
+Everyone has it's own recopes how to build best web development environment in the world. The best one is that suits your needs. I prefer to have only minimal set of software on my work PC that's I widely adopt virtualization with Vagrant and ESXi. Goal is to have robust way to run multiple projects on my host without interference. With ESZXi and Vagrant I successfully can accomplish the goal.

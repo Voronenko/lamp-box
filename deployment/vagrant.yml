@@ -16,8 +16,10 @@
 
     php_extensions:
       - { name: "php5-curl" }
+      - { name: "php5-xsl" }
       - { name: "php5-memcache" }
       - { name: "php5-memcached" }
+
 
     vagrant_lvh_sites:
       - { type: "web",                                                                 # WSGI & LAMP sites supported
@@ -37,6 +39,8 @@
      - include: "{{root_dir}}/tasks_memcached.yml"                                  # installs memcached service
      - include: "{{root_dir}}/tools/tasks_mailhog.yml"
      - include: "./tasks_phpextensions.yml"                                         # Installs custom php extensions
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"                   # Webgrind
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
      - include: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
      - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
      - include: "{{root_dir}}/vagrant/tasks_vagrant_import_mysqldb_databag.yml"     # (re)imports databases from db folder
