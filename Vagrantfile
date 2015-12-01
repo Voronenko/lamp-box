@@ -47,4 +47,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |c|
     ansible.playbook = "./deployment/vagrant.yml"
   end
 
+  c.vm.provision "ansible_update", type: "ansible", run: "always" do |ansible|
+    ansible.playbook = "./deployment/vagrant.yml"
+    ansible.tags = "update"
+  end
+
 end
