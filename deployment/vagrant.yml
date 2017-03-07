@@ -9,7 +9,7 @@
     java_version: 8
     mailhog_version: 0.1.6
     mongo_version: 3
-    nodejs_version: "0.12" # 0.10 0.12
+    nodejs_version: "6.x" # 0.10 0.12 4.x 5.x 6.x 7.x
     php_family: default # 5.4 | 5.5 | 5.6 | default
     php_xdebug_version: 2.3.3
 
@@ -25,8 +25,8 @@
       - { type: "web",                                                                 # WSGI & LAMP sites supported
           name: "tools",                                                               # Name of the dev website
           path: "/vagrant/public/vagrant-tools",                                       # Path to site home folder
-#          template: "{{playbook_dir}}/files/apache2/website.yml",                     # Provide custom template, uf builtin is not good
-          aliases: [ "tools.vagrant.dev" ],                                             # These will be additional aliases to <<name>>.lvh.me
+          # template: "{{playbook_dir}}/files/apache2/website.yml",                    # Provide custom template, uf builtin is not good
+          aliases: [ "tools.vagrant.dev" ],                                            # These will be additional aliases to <<name>>.lvh.me
           vhost_overrides: ["SetEnv no-gzip 1", "RequestHeader unset Accept-Encoding"] # These lines will be added to website configuration file.
         }
 
@@ -35,11 +35,12 @@
      - include: "{{root_dir}}/tasks_apache.yml"                                     # apache prefork|worker
      - include: "{{root_dir}}/tasks_php_apt_switchversion.yml"                      # Selects preferred php family
      - include: "{{root_dir}}/tasks_php_apache.yml"                                 # php 5.5 for apache
-     - include: "{{root_dir}}/tasks_nodejs.yml"                                     # node 0.12.*
+     - include: "{{root_dir}}/tasks_nodejs.yml"                                     # node 6.x
      - include: "{{root_dir}}/tasks_memcached.yml"                                  # installs memcached service
-     - include: "{{root_dir}}/tools/tasks_mailhog.yml"
+     - include: "{{root_dir}}/tasks_sendmail.yml"                                   # Sendmail
+     - include: "{{root_dir}}/tools/tasks_mailhog.yml"                              # Mailhog
      - include: "./tasks_phpextensions.yml"                                         # Installs custom php extensions
-     - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"                   # Webgrind
+     - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"               # Webgrind
      - include: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
      - include: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
      - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
