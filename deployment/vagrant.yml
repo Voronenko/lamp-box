@@ -40,7 +40,6 @@
      - include: "{{root_dir}}/tasks_sendmail.yml"                                   # Sendmail
      - include: "{{root_dir}}/tools/tasks_mailhog.yml"                              # Mailhog
      - include: "./tasks_phpextensions.yml"                                         # Installs custom php extensions
-     - include: "{{root_dir}}/vagrant/tasks_vagrant_php_webgrind.yml"               # Webgrind
      - include: "{{root_dir}}/vagrant/tasks_vagrant_phpmyadmin.yml"                 # PhpMyAdmin
      - include: "{{root_dir}}/vagrant/tasks_vagrant_php_xdebug.yml"                 # XDebug extension
      - include: "{{root_dir}}/vagrant/tasks_vagrant_write_tools.yml"                # db import script, python venv init scripts
